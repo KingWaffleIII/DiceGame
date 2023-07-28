@@ -1,0 +1,18 @@
+# IDE
+.vscode
+.history/
+.idea/
+thunder-tests/
+.eslintcache
+
+# Language-specific files
+node_modules/
+__pycache__/
+
+# DB
+postgres/
+db.sqlite3
+db.sqlite
+
+# Project
+

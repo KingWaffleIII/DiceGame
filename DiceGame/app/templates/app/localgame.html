@@ -1,0 +1,85 @@
+{% extends "app/base.html" %} {% block "content" %}
+<h1>Local Game</h1>
+
+<br />
+
+<div class="container">
+	<table class="table table-dark table-bordered border-dark">
+		<thead>
+			<tr>
+				<th scope="col">Player</th>
+				<th scope="col">Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="table-active">
+				<th scope="row">1</th>
+				<td id="p1-score">0</td>
+			</tr>
+			<tr>
+				<th scope="row">2</th>
+				<td id="p2-score">0</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<br />
+
+<h2>Player 1's Turn</h2>
+
+{% comment %} <button class="btn btn-primary" id="roll">Roll</button> {% endcomment %}
+
+<h2>Click the dice to roll it!</h2>
+
+  
+<div class="dice-container">
+	<div class="dice">
+		<div class="one">
+			<span></span>
+		</div>
+		<div class="two">
+			<span></span>
+			<span></span>
+		</div>
+		<div class="three">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<div class="four">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<div class="five">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<div class="six">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+</div>
+
+{% comment %} <script>
+	const roll = document.getElementById("roll");
+	roll.addEventListener("click", function () {
+		const dice = Math.floor(Math.random() * 6) + 1;
+		// update p1-Score and add the old score
+		const p1Score = document.getElementById("p1-score");
+		const oldP1Score = parseInt(p1Score.innerHTML);
+		p1Score.innerHTML = oldP1Score + dice;
+	});
+</script> {% endcomment %}
+
+{% endblock %}
