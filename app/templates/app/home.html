@@ -1,0 +1,92 @@
+{% extends "app/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-md-6 text-center">
+		<h2>Welcome, {{ request.user.username }}.</h2>
+	</div>
+</div>
+<br />
+
+<div class="row justify-content-center">
+	<div class="col-md-6 text-center">
+		<button id="new-game" class="btn btn-primary">New Game</button>
+	</div>
+</div>
+<br />
+
+<div class="row justify-content-center">
+	<div class="col-md-6 text-center">
+		<h2>OR</h2>
+	</div>
+</div>
+
+<div class="row justify-content-center">
+	<div class="col-md-6 text-center">
+		<div class="input-group mt-5">
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Enter game code"
+				aria-label="Game Code"
+				aria-describedby="basic-addon2"
+				id="game-code"
+			/>
+			<div class="input-group-append">
+				<button id="join-game" class="btn btn-success" type="button">
+					Join Game
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br />
+
+<h3 class="text-center">Leaderboard</h1>
+
+<ol class="list-group list-group-numbered">
+	{% for game in games %}
+	<a href="/game/{{ game.0 }}/results">
+		<li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-start">
+			<div class="ms-2 me-auto">
+				<div class="fw-bold">{{ game.1 }}</div>
+			</div>
+			<span class="badge bg-primary rounded-pill">{{ game.2 }}</span>
+		</li>
+	</a>
+	{% endfor %}
+</ol>
+
+<script
+	src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+	integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+	crossorigin="anonymous"
+></script> 
+<script>
+	$("#new-game").click(async () => {
+		const res = await (await fetch("api/games/", {
+			method: "POST",
+			mode: "same-origin",
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": "{{ csrf_token }}",
+			},
+		})).json();
+		if (res.id) {
+			window.location.href = `/game/${res.id}`;
+		} else {
+			sendMessage("There was an error creating a new game. Please try again later.", "danger")
+		}
+	});
+
+	$("#join-game").click(() => {
+		const code = $("#game-code").val();
+		if (code.length !== 6) {
+			sendMessage("Invalid game code.", "danger");
+			return;
+		}
+		window.location.href = `/game/${code}`;
+	});
+</script>
+{% endblock %}

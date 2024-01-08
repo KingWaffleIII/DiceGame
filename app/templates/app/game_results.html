@@ -1,0 +1,26 @@
+{% extends "app/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-md-6 text-center">
+		<h1>Congrats, <b>{{ winner }}</b>!</h1>
+        <h4>You are the winner!</h4>
+        <h3>Score: <b>{{ winning_score }}</b></h3>
+        {% if top_5 %}
+        <h4>You made it onto the leaderboard!</h3>
+        {% endif %}
+	</div>
+</div>
+
+<br />
+
+<div class="row justify-content-center">
+	<div class="col-md-6 text-center">
+		<h2>{{ loser }}</h2>
+        <h3>Score: {{ losing_score }}</h3>
+        <h4>Better luck next time!</h4>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,7 @@
+POST http://localhost:8000/api/games/ HTTP/1.1
+Authorization: Basic test:test
+content-type: application/json
+
+# {
+#     "players": [1,2]
+# }
