@@ -124,6 +124,18 @@ class DiceGameConsumer(WebsocketConsumer):
 
         self.game_main(None)
 
+    # This logic is run when the game ends early (a user disconnects) and terminates the game.
+    def game_abort(self, _event):
+        # This sends a message to the client to handle the abort client-side (e.g. redirecting to the home page).
+        self.send(
+            text_data=json.dumps({"message": "player disconnected", "abort": True})
+        )
+        try:
+            self.game.delete()
+        except Game.DoesNotExist:
+            pass
+        self.close()
+
     # This logic is run when 2 players are connected and the clients are notified of the other player's username.
     def game_ready(self, _event):
         self.send(

@@ -68,6 +68,7 @@ def login(request):
 # This logic is run when the user visits the logout page.
 def logout(request):
     logout_user(request)
+    messages.success(request, "You have been logged out.")
     return redirect("app:login")
 
 
