@@ -10,6 +10,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet"/>
+        {% comment %} Here, we define the CSS for the dice and their animations {% endcomment %}
         <style>
             * {
                 margin: 0;
@@ -236,6 +237,7 @@
     </head>
     <body>
 
+        {% comment %} We add the game info as well as the dice. {% endcomment %}
         <div class="centre-container">
             <h2 class="centre">Game code: {{ id }}</h2>
             <br /><br />
@@ -358,10 +360,12 @@
 		</div>
 		<button type="button" id="roll-button">Roll Dice</button>
 
+        {% comment %} We set some variables (player username and websockets URL) that the JS script needs because this template HTMl files receives variables from views.py. {% endcomment %}
         <script>
             sessionStorage.setItem("username", "{{ request.user.username }}");
             sessionStorage.setItem("ws", "ws://{{ request.get_host }}/ws/game/{{ id }}/");
         </script>
+        {% comment %} We import the JS script for the game. {% endcomment %}
         <script src="{% static 'app/game.js' %}"></script></script>
     </body>
 </html>

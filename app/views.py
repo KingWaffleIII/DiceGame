@@ -1,3 +1,5 @@
+# This file contains the server logic when it receives a request.
+
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
@@ -6,12 +8,14 @@ from django.shortcuts import redirect, render
 from api.models import Game, User
 
 
+# This function gets the top 5 games by score for the leaderboard.
 def get_top_five_games():
+    # Since we have two separate scores, we get the 5 top games by player1_score and player2_score so we can combine them.
     top_games = Game.objects.filter(finished=True).order_by("-player1_score")[:5]
     top_games2 = Game.objects.filter(finished=True).order_by("-player2_score")[:5]
 
-    # combine the two lists, sort by score, and get the top 5
-
+    # We combine the two lists and then sort them.
+    # We use a lambda function to sort by the higher score, and then reverse the list so it is in descending order.
     combined = set(list(top_games) + list(top_games2))
     top_games = sorted(
         combined,
@@ -23,6 +27,7 @@ def get_top_five_games():
 
     games = []
 
+    # We just want to return the game code, winner, and score of the winner.
     for game in top_games:
         games.append(
             (
@@ -37,10 +42,13 @@ def get_top_five_games():
     return games
 
 
+# This logic is run when the user visits the login page.
 def login(request):
+    # We check if they are already logged in.
     if request.user.is_authenticated:
         messages.error(request, "You are already logged in.")
         return redirect("app:home")
+    # If they are submitting the login information, we check if it is correct using the built-in authenticate() function.
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -53,14 +61,19 @@ def login(request):
             return redirect("app:login")
         login_user(request, user)
         return redirect("app:home")
+    # We display the HTML template for the login page.
     return render(request, "app/login.html", {"title": "Login"})
 
 
+# This logic is run when the user visits the logout page.
 def logout(request):
     logout_user(request)
     return redirect("app:login")
 
 
+# This logic is run when the user visits the sign-up page.
+# It is very similar to the login page, but it creates a new user instead of authenticating one.
+# We also need to check if the information is equal to an already existing user.
 def signup(request):
     if request.user.is_authenticated:
         messages.error(request, "You are already logged in.")
@@ -85,6 +98,7 @@ def signup(request):
     return render(request, "app/sign-up.html", {"title": "Sign-up"})
 
 
+# This page is for the user to create a new game, join a game, or view the leaderboard.
 def home(request):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to view this page.")
@@ -102,6 +116,7 @@ def home(request):
     )
 
 
+# This page is for playing the game itself. We check if the game is valid.
 def play(request, id):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to view this page.")
@@ -115,6 +130,7 @@ def play(request, id):
     return render(request, "app/game.html", {"title": id, "id": id})
 
 
+# This page is for when a game is finished, to view the results. We need to check if the game is valid and finished for this.
 def game_results(request, id):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to view this page.")
@@ -125,6 +141,7 @@ def game_results(request, id):
         messages.error(request, "That game does not exist.")
         return redirect("app:home")
 
+    # We used to stop players from viewing the results of games they were not in, but this was deemed unnecessary.
     # if not game.players.contains(request.user):
     #     messages.error(request, "You are not a player in this game.")
     #     return redirect("app:home")
@@ -132,6 +149,8 @@ def game_results(request, id):
     if not game.finished:
         messages.error(request, "This game is not finished yet.")
         return redirect("app:home")
+
+    # We calculate the winner and loser of the game, and their scores.
 
     if game.player1_score > game.player2_score:
         winner = game.players.first().username
