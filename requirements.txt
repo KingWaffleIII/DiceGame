@@ -1,2 +1,8 @@
-django>=4.2,<=4.3
-gunicorn>=20.0,<=21
+pylint-django==2.5.3
+pylint==2.17.5 
+django==4.2.5 
+djangorestframework==3.14.0 
+gunicorn==21.2.0
+channels[daphne]==4.0.0
+channels-redis==4.1.0
+websockets==12.0

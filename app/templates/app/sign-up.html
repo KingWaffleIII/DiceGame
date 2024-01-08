@@ -1,0 +1,21 @@
+{% extends "app/base.html" %}
+{% block title %}Sign-up{% endblock %}
+{% block content %}
+<h3>Sign-up</h3>
+<form method="post">
+	{% csrf_token %}
+	<div class="fieldWrapper mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" name="username" id="username" class="form-control">
+	</div>
+    <div class="fieldWrapper mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" class="form-control">
+	</div>
+    <div class="fieldWrapper mb-3">
+        <label for="password-confirm" class="form-label">Confirm password</label>
+        <input type="password" name="password-confirm" id="password-confirm" class="form-control">
+	</div>
+	<button type="submit" class="btn btn-primary">Sign-up</button>
+</form>
+{% endblock %}
